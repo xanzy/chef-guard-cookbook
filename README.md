@@ -4,11 +4,11 @@ The Chef-Guard cookbook installs and configures Chef-Guard into your environment
 
 Attributes
 ----------
-Comming up...
+Please check http://xanzy.io/projects/chef-guard for all needed details
 
 Usage
 -----
-Comming up...
+Please check http://xanzy.io/projects/chef-guard for all needed details
 
 Contributing
 ------------
