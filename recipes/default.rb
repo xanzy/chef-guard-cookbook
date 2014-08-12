@@ -29,27 +29,53 @@ directory node['chef-guard']['install_dir'] do
 end
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{File.basename(node['chef-guard']['url'])}" do
-  backup false
   source node['chef-guard']['url']
-  checksum node ['chef-guard']['checksum']
+  backup false
+  checksum node['chef-guard']['checksum']
   notifies :stop, 'service[chef-guard]', :immediately
   notifies :run, 'execute[extract_download]', :immediately
 end
 
 execute 'extract_download' do
   cwd node['chef-guard']['install_dir']
-  command "tar zxf #{Chef::Config[:file_cache_path]}/#{File.basename(node['chef-guard']['url'])}"
+  command "tar zxof #{Chef::Config[:file_cache_path]}/#{File.basename(node['chef-guard']['url'])}"
   action :nothing
 end
 
+template '/etc/init/chef-guard.conf' do
+  source 'chef-guard.upstart.erb'
+  backup false
+  variables(
+    :recipe_file => (__FILE__).to_s.split("cookbooks/")[1],
+    :template_file => source.to_s,
+    :basedir => node['chef-guard']['install_dir']
+  )
+end
 
+template "#{node['chef-guard']['install_dir']}/chef-guard.conf" do
+  source 'chef-guard.conf.erb'
+  backup false
+  variables(
+    :recipe_file => (__FILE__).to_s.split("cookbooks/")[1],
+    :template_file => source.to_s,
+    :config => node['chef-guard']['config']
+  )
+  notifies :reload, 'service[chef-guard]'
+end
+
+file node['chef-guard']['config']['chef']['key'] do
+  content 'You should overwrite the content from a wrapper cookbook so it contains the .pem content for your setup'
+  backup false
+end
+
+file node['chef-guard']['config']['supermarket']['key'] do
+  content 'You should overwrite the content from a wrapper cookbook so it contains the .pem content for your setup'
+  backup false
+end
 
 service 'chef-guard' do
-  start_command 'start chef-guard'
-  stop_command 'stop chef-guard'
-  status_command 'status chef-guard'
-  reload_command 'reload chef-guard'
-  restart_command 'restart chef-guard'
-  status :restart => true, :reload => true, :status => true
+  provider Chef::Provider::Service::Upstart
+  supports :restart => true, :reload => true, :status => true
   action :start
+  only_if { File.exists?("#{node['chef-guard']['install_dir']}/chef-guard") }
 end
