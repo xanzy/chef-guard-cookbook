@@ -8,16 +8,16 @@
 
 [default]
   <% @config['default'].each do |k,v| -%>
-  <% if v.kind_of?(Array) -%>
-  <% v.each do |subv| -%>
-  <%= k %> = <%= subv %>
-  <% end -%>
   <%= k %> = <%= v %>
-  <% end -%>
   <% end -%>
 
 [chef]
   <% @config['chef'].each do |k,v| -%>
+  <%= k %> = <%= v %>
+  <% end -%>
+
+[community]
+  <% @config['community'].each do |k,v| -%>
   <%= k %> = <%= v %>
   <% end -%>
 
@@ -26,18 +26,13 @@
   <%= k %> = <%= v %>
   <% end -%>
 
-[berksapi]
-  <% @config['berksapi'].each do |k,v| -%>
+[graphite]
+  <% @config['graphite'].each do |k,v| -%>
   <%= k %> = <%= v %>
   <% end -%>
 
 [tests]
   <% @config['tests'].each do |k,v| -%>
-  <%= k %> = <%= v %>
-  <% end -%>
-
-[graphite]
-  <% @config['graphite'].each do |k,v| -%>
   <%= k %> = <%= v %>
   <% end -%>
 
