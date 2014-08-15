@@ -18,8 +18,9 @@
 #
 
 
-default['chef-guard']['version']     = '0.2.1'
+default['chef-guard']['version']     = '0.2.2'
 default['chef-guard']['install_dir'] = '/opt/chef-guard'
+default['chef-guard']['vault']       = 'chef-guard'
 
 if kernel['machine'] =~ /x86_64/
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x64.tar.gz"
@@ -45,7 +46,8 @@ default['chef-guard']['config']['default']['searchgithub']    = true
 default['chef-guard']['config']['default']['publishcookbook'] = true
 default['chef-guard']['config']['default']['blacklist']       = ''
 default['chef-guard']['config']['default']['gitorganization'] = 'chef-guard'
-default['chef-guard']['config']['default']['gitcookbookorgs'] = 'org1, org2'
+default['chef-guard']['config']['default']['gitcookbookorgs'] = ''
+default['chef-guard']['config']['default']['excludefcs']      = ''
 
 # These options are used for the 'Chef' section
 default['chef-guard']['config']['chef']['enterprisechef'] = true
@@ -54,12 +56,11 @@ default['chef-guard']['config']['chef']['port']           = '443'
 default['chef-guard']['config']['chef']['sslnoverify']    = false
 default['chef-guard']['config']['chef']['erchefip']       = '127.0.0.1'
 default['chef-guard']['config']['chef']['erchefport']     = '8000'
-default['chef-guard']['config']['chef']['s3key']          = ''
-default['chef-guard']['config']['chef']['s3secret']       = ''
 default['chef-guard']['config']['chef']['version']        = '11.12.0'
 default['chef-guard']['config']['chef']['user']           = 'chef-guard'
 default['chef-guard']['config']['chef']['key']            = "#{node['chef-guard']['install_dir']}/chef.pem"
 
+# These options are used for the 'Community' section
 default['chef-guard']['config']['community']['supermarket'] = 'https://supermarket.getchef.com'
 default['chef-guard']['config']['community']['forks']       = ''
 
@@ -70,9 +71,6 @@ default['chef-guard']['config']['supermarket']['sslnoverify'] = false
 default['chef-guard']['config']['supermarket']['version']     = '11.12.0'
 default['chef-guard']['config']['supermarket']['user']        = 'chef-guard'
 default['chef-guard']['config']['supermarket']['key']         = "#{node['chef-guard']['install_dir']}/supermarket.pem"
-
-# These options are used for the 'BerksAPI' section
-default['chef-guard']['config']['[berksapi']['serverurl'] = 'https://api.berkshelf.com'
 
 # These options are used for the 'Graphite' section
 default['chef-guard']['config']['graphite']['server'] = ''

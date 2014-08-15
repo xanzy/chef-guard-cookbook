@@ -17,6 +17,15 @@
 # limitations under the License.
 #
 
+chef_gem "chef-vault"
+require 'chef-vault'
+
+# First get the needed s3 key and secret from a Chef-Vault
+s3info = ChefVault::Item.load(node['chef-guard']['vault'], 'chef.s3')
+# Then set the s3 attributes to the correct values...
+node.default['chef-guard']['config']['chef']['s3key']    = s3info['key']
+node.default['chef-guard']['config']['chef']['s3secret'] = s3info['secret']
+
 # Install the gems needed for the enabled tests
 node['chef-guard']['config']['tests'].each do |k,v|
   unless v.empty?
@@ -63,13 +72,15 @@ template "#{node['chef-guard']['install_dir']}/chef-guard.conf" do
   notifies :reload, 'service[chef-guard]'
 end
 
+chefpem = ChefVault::Item.load(node['chef-guard']['vault'], File.base(node['chef-guard']['config']['chef']['key']))
 file node['chef-guard']['config']['chef']['key'] do
-  content 'You should overwrite the content from a wrapper cookbook so it contains the .pem content for your setup'
+  content chefpem['file-content']
   backup false
 end
 
+supermarketpem = ChefVault::Item.load(node['chef-guard']['vault'], File.base(node['chef-guard']['config']['chef']['key']))
 file node['chef-guard']['config']['supermarket']['key'] do
-  content 'You should overwrite the content from a wrapper cookbook so it contains the .pem content for your setup'
+  content supermarketpem['file-content']
   backup false
 end
 

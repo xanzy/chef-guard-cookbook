@@ -8,7 +8,10 @@ Please check http://xanzy.io/projects/chef-guard for all needed details
 
 Usage
 -----
-Please check http://xanzy.io/projects/chef-guard for all needed details
+This cookbook uses [Chef-Vault](https://github.com/Nordstrom/chef-vault) to store the .pem file content. Please see the following example for creating the vault items:
+`knife vault create chef-guard chef.pem -M client -S "name:some-node-search" -A your-chef-username --file chef.pem`
+
+For all other needed details please check <http://xanzy.io/projects/chef-guard>
 
 Contributing
 ------------
