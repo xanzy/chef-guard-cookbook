@@ -18,9 +18,10 @@
 #
 
 
-default['chef-guard']['version']     = '0.2.2'
-default['chef-guard']['install_dir'] = '/opt/chef-guard'
-default['chef-guard']['vault']       = 'chef-guard'
+default['chef-guard']['version']       = '0.2.2'
+default['chef-guard']['install_dir']   = '/opt/chef-guard'
+default['chef-guard']['vault']         = 'chef-guard'
+default['chef-guard']['s3_vault_item'] = 'chef.s3'
 
 if kernel['machine'] =~ /x86_64/
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x64.tar.gz"

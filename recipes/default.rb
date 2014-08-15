@@ -21,7 +21,7 @@ chef_gem "chef-vault"
 require 'chef-vault'
 
 # First get the needed s3 key and secret from a Chef-Vault
-s3info = ChefVault::Item.load(node['chef-guard']['vault'], 'chef.s3')
+s3info = ChefVault::Item.load(node['chef-guard']['vault'], node['chef-guard']['s3_vault_item'])
 # Then set the s3 attributes to the correct values...
 node.default['chef-guard']['config']['chef']['s3key']    = s3info['key']
 node.default['chef-guard']['config']['chef']['s3secret'] = s3info['secret']
@@ -72,13 +72,13 @@ template "#{node['chef-guard']['install_dir']}/chef-guard.conf" do
   notifies :reload, 'service[chef-guard]'
 end
 
-chefpem = ChefVault::Item.load(node['chef-guard']['vault'], File.base(node['chef-guard']['config']['chef']['key']))
+chefpem = ChefVault::Item.load(node['chef-guard']['vault'], File.basename(node['chef-guard']['config']['chef']['key']))
 file node['chef-guard']['config']['chef']['key'] do
   content chefpem['file-content']
   backup false
 end
 
-supermarketpem = ChefVault::Item.load(node['chef-guard']['vault'], File.base(node['chef-guard']['config']['chef']['key']))
+supermarketpem = ChefVault::Item.load(node['chef-guard']['vault'], File.basename(node['chef-guard']['config']['chef']['key']))
 file node['chef-guard']['config']['supermarket']['key'] do
   content supermarketpem['file-content']
   backup false
