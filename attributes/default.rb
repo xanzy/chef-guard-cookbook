@@ -18,7 +18,7 @@
 #
 
 
-default['chef-guard']['version']       = '0.2.2'
+default['chef-guard']['version']       = '0.3.0'
 default['chef-guard']['install_dir']   = '/opt/chef-guard'
 default['chef-guard']['vault']         = 'chef-guard'
 default['chef-guard']['s3_vault_item'] = 'chef.s3'
