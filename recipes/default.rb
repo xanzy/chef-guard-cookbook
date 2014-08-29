@@ -59,7 +59,7 @@ template '/etc/init/chef-guard.conf' do
     :template_file => source.to_s,
     :basedir => node['chef-guard']['install_dir']
   )
-  notifies :reload, 'service[chef-guard]'
+  notifies :restart, 'service[chef-guard]'
 end
 
 template "#{node['chef-guard']['install_dir']}/chef-guard.conf" do
