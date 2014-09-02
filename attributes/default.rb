@@ -48,6 +48,7 @@ default['chef-guard']['config']['default']['publishcookbook'] = true
 default['chef-guard']['config']['default']['blacklist']       = ''
 default['chef-guard']['config']['default']['gitorganization'] = 'chef-guard'
 default['chef-guard']['config']['default']['gitcookbookorgs'] = ''
+default['chef-guard']['config']['default']['includefcs']      = ''
 default['chef-guard']['config']['default']['excludefcs']      = ''
 
 # These options are used for the 'Chef' section
