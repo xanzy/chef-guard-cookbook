@@ -85,6 +85,10 @@ file node['chef-guard']['config']['supermarket']['key'] do
   backup false
 end
 
+cookbook_file 'cg_foodcritic_tests.rb' do
+  path "#{node['chef-guard']['install_dir']}/cg_foodcritic_tests.rb"
+end
+
 service 'chef-guard' do
   provider Chef::Provider::Service::Upstart
   supports :restart => true, :reload => true, :status => true
