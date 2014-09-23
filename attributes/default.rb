@@ -18,17 +18,17 @@
 #
 
 
-default['chef-guard']['version']       = '0.3.3'
+default['chef-guard']['version']       = '0.4.0'
 default['chef-guard']['install_dir']   = '/opt/chef-guard'
 default['chef-guard']['vault']         = 'chef-guard'
 default['chef-guard']['s3_vault_item'] = 'chef.s3'
 
 if kernel['machine'] =~ /x86_64/
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x64.tar.gz"
-  default['chef-guard']['checksum'] = '5faa80f53a7c2528cb5ea9ac99beb9411c2509aa869d199957e1b5d5abc78510'
+  default['chef-guard']['checksum'] = '5ef671b3f262f92fdd3e5552a4b023951c705c308fbf276372beccba3c990348'
 else
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x86.tar.gz"
-  default['chef-guard']['checksum'] = '18691cb47ca932379b835efc7fe7293f132c665835cf3ef832c3224fbf14eee5'
+  default['chef-guard']['checksum'] = 'fb2d2d58fae133c1b59e7d5f6728bcf35512c4f93708d184b5dc9b4d025827bb'
 end
 
 # These options are used for the 'Default' section
@@ -40,7 +40,7 @@ default['chef-guard']['config']['default']['maildomain']      = ''
 default['chef-guard']['config']['default']['mailserver']      = ''
 default['chef-guard']['config']['default']['mailport']        = '25'
 default['chef-guard']['config']['default']['mailrecipient']   = ''
-default['chef-guard']['config']['default']['validatechanges'] = true
+default['chef-guard']['config']['default']['validatechanges'] = 'permissive'
 default['chef-guard']['config']['default']['commitchanges']   = true
 default['chef-guard']['config']['default']['mailchanges']     = true
 default['chef-guard']['config']['default']['searchgithub']    = true
