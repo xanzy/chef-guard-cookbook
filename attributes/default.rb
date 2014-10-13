@@ -18,17 +18,17 @@
 #
 
 
-default['chef-guard']['version']       = '0.4.1'
+default['chef-guard']['version']       = '0.4.2'
 default['chef-guard']['install_dir']   = '/opt/chef-guard'
 default['chef-guard']['vault']         = 'chef-guard'
 default['chef-guard']['s3_vault_item'] = 'chef.s3'
 
 if kernel['machine'] =~ /x86_64/
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x64.tar.gz"
-  default['chef-guard']['checksum'] = '1e2b0e5cf55267af69a596bce7fb29fbae452f31692e538fd620889256015b47'
+  default['chef-guard']['checksum'] = '743c5e4d1705ac6396648cf26854eb2df12aef19f4a4d035f9c2cdabb6897223'
 else
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x86.tar.gz"
-  default['chef-guard']['checksum'] = '525f67f9293af40e98ca65841753029dcafee0cb704547342a653be56b0223a6'
+  default['chef-guard']['checksum'] = '19c10da17540c6e5d6ee3edc88897970c998746873809484575a913d21bb93fd'
 end
 
 # These options are used for the 'Default' section
