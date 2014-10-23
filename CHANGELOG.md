@@ -1,9 +1,14 @@
 Chef-Guard CHANGELOG
 ====================
 
+0.2.5
+-----
+- Sander van Harmelen - Updated the version attibutes to use the latest release of Chef-Guard v0.5.0
+- Added a new attribute for manageing the Chef clients path (new feature of Chef-Guard)
+
 0.1.2
 -----
-- Sander van Harmelen - Changed the version attibute to point to the latest release of CHef-Guard v0.3.0
+- Sander van Harmelen - Changed the version attibute to point to the latest release of Chef-Guard v0.3.0
 
 0.1.1
 -----
