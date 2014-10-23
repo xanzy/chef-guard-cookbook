@@ -18,17 +18,17 @@
 #
 
 
-default['chef-guard']['version']       = '0.4.5'
+default['chef-guard']['version']       = '0.5.0'
 default['chef-guard']['install_dir']   = '/opt/chef-guard'
 default['chef-guard']['vault']         = 'chef-guard'
 default['chef-guard']['s3_vault_item'] = 'chef.s3'
 
 if kernel['machine'] =~ /x86_64/
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x64.tar.gz"
-  default['chef-guard']['checksum'] = 'a140ff2202983648486c917f4bc3c8a0fbdacbb98fe4a672fca3f3e3c93109a3'
+  default['chef-guard']['checksum'] = '7fb615ddc13fc7105ac9f111af45cee392e0bd91288d4461532725f9254cf3ae'
 else
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x86.tar.gz"
-  default['chef-guard']['checksum'] = '0f6e87fe5474a8deb872a1f808ebd80827df4db15e886ce24efa7c23cb0b7819'
+  default['chef-guard']['checksum'] = '00309f68d8a86b7bd70bb2b09db82870e0ae2d2b14167aee76ab7e121b01b6ac'
 end
 
 # These options are used for the 'Default' section
@@ -61,6 +61,9 @@ default['chef-guard']['config']['chef']['erchefport']     = '8000'
 default['chef-guard']['config']['chef']['version']        = '11.12.0'
 default['chef-guard']['config']['chef']['user']           = 'chef-guard'
 default['chef-guard']['config']['chef']['key']            = "#{node['chef-guard']['install_dir']}/chef.pem"
+
+# This option is used for the 'ChefClients' section
+default['chef-guard']['config']['chefclients']['path'] = "#{node['chef-guard']['install_dir']}/clients"
 
 # These options are used for the 'Community' section
 default['chef-guard']['config']['community']['supermarket'] = 'https://supermarket.getchef.com'
