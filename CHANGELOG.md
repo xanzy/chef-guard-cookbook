@@ -1,6 +1,10 @@
 Chef-Guard CHANGELOG
 ====================
 
+0.2.7
+-----
+- Sander Botman - Fixed the chef-guard.conf template so it includes to the 'chefclient' section
+
 0.2.6
 -----
 - Sander van Harmelen - Updated the version attibutes to use the latest release of Chef-Guard v0.5.0
