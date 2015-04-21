@@ -79,10 +79,12 @@ file node['chef-guard']['config']['chef']['key'] do
   backup false
 end
 
-supermarketpem = ChefVault::Item.load(node['chef-guard']['vault'], File.basename(node['chef-guard']['config']['chef']['key']))
-file node['chef-guard']['config']['supermarket']['key'] do
-  content supermarketpem['file-content']
-  backup false
+if node['chef-guard']['config']['supermarket']
+  supermarketpem = ChefVault::Item.load(node['chef-guard']['vault'], File.basename(node['chef-guard']['config']['chef']['key']))
+  file node['chef-guard']['config']['supermarket']['key'] do
+    content supermarketpem['file-content']
+    backup false
+  end
 end
 
 cookbook_file 'cg_foodcritic_tests.rb' do
