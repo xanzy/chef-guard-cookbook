@@ -79,7 +79,7 @@ file node['chef-guard']['config']['chef']['key'] do
   backup false
 end
 
-if node['chef-guard']['config']['supermarket']
+unless node['chef-guard']['config']['supermarket'].nil?
   supermarketpem = ChefVault::Item.load(node['chef-guard']['vault'], File.basename(node['chef-guard']['config']['chef']['key']))
   file node['chef-guard']['config']['supermarket']['key'] do
     content supermarketpem['file-content']
