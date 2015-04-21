@@ -21,15 +21,19 @@
   <%= k %> = <%= v %>
   <% end -%>
 
+<% if @config['supermarket'] -%>
 [supermarket]
   <% @config['supermarket'].each do |k,v| -%>
   <%= k %> = <%= v %>
   <% end -%>
+<% end -%>
 
+<% if @config['graphite'] -%>
 [graphite]
   <% @config['graphite'].each do |k,v| -%>
   <%= k %> = <%= v %>
   <% end -%>
+<% end -%>
 
 [chefclients]
   <% @config['chefclients'].each do |k,v| -%>
