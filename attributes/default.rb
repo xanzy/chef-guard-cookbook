@@ -70,6 +70,9 @@ default['chef-guard']['config']['community']['supermarket'] = 'https://supermark
 default['chef-guard']['config']['community']['forks']       = ''
 
 # These options are used for the 'Supermarket' section
+#
+# If you don't have an internal Supermarket, replace the values below with just:
+#default['chef-guard']['config']['supermarket'] = nil
 default['chef-guard']['config']['supermarket']['server']      = 'supermarket.company.com'
 default['chef-guard']['config']['supermarket']['port']        = 443
 default['chef-guard']['config']['supermarket']['sslnoverify'] = false
