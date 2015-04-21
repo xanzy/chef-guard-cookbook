@@ -21,29 +21,33 @@
   <%= k %> = <%= v %>
   <% end -%>
 
-<% if @config['supermarket'] -%>
+<% unless @config['supermarket'].nil? -%>
 [supermarket]
   <% @config['supermarket'].each do |k,v| -%>
   <%= k %> = <%= v %>
   <% end -%>
 <% end -%>
 
-<% if @config['graphite'] -%>
+<% unless @config['graphite'].nil? -%>
 [graphite]
   <% @config['graphite'].each do |k,v| -%>
   <%= k %> = <%= v %>
   <% end -%>
 <% end -%>
 
+<% unless @config['chefclients'].nil? -%>
 [chefclients]
   <% @config['chefclients'].each do |k,v| -%>
   <%= k %> = <%= v %>
   <% end -%>
+<% end -%>
 
+<% unless @config['tests'].nil? -%>
 [tests]
   <% @config['tests'].each do |k,v| -%>
   <%= k %> = <%= v %>
   <% end -%>
+<% end -%>
 
 <% unless @config['github'].nil? -%>
 <% @config['github'].each do |k,v| -%>
