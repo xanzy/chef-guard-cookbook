@@ -96,7 +96,7 @@ default['chef-guard']['config']['tests']['rubocop']    = '/opt/chef/embedded/bin
 #  'token' => 'xxx'
 #}
 #default['chef-guard']['config']['github']['org2'] = {
-#  'serverurl' => 'https://github.company.com', => url to your Github Enterprise appliance
+#  'serverurl' => 'https://github.company.com/api/v3', => url to your Github Enterprise appliance
 #  'sslnoverify' => false,
 #  'token' => 'xxx'
 #}
