@@ -1,6 +1,11 @@
 Chef-Guard CHANGELOG
 ====================
 
+0.3.0
+-----
+- Sander van Harmelen - Updated the cookbook to use Chef-Guard v0.6.0 which requires some config changes
+- Sander van Harmelen - Converted the custom Chef-Guard foodcritic file to a template. You can now add a custom regex to check for certain cookbook names and the embedded foodcritic tests will only run against matching cookbooks.
+
 0.2.7
 -----
 - Sander Botman - Fixed the chef-guard.conf template so it includes to the 'chefclient' section
