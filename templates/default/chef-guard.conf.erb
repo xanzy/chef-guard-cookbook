@@ -28,13 +28,6 @@
   <% end -%>
 <% end -%>
 
-<% unless @config['graphite'].nil? -%>
-[graphite]
-  <% @config['graphite'].each do |k,v| -%>
-  <%= k %> = <%= v %>
-  <% end -%>
-<% end -%>
-
 <% unless @config['chefclients'].nil? -%>
 [chefclients]
   <% @config['chefclients'].each do |k,v| -%>
@@ -49,20 +42,22 @@
   <% end -%>
 <% end -%>
 
-<% unless @config['github'].nil? -%>
-<% @config['github'].each do |k,v| -%>
-[github "<%= k %>"]
+<% unless @config['git'].nil? -%>
+<% @config['git'].each do |k,v| -%>
+[git "<%= k %>"]
   <% v.each do |subk,subv| -%>
   <%= subk %> = <%= subv %>
   <% end -%>
+
 <% end -%>
 <% end -%>
 
-<% unless @config['chef']['enterprisechef'] == false || @config['customers'].nil? -%>
+<% if @config['chef']['type'] == "enterprise" || @config['chef']['version'] > 11 && !@config['customers'].nil? -%>
 <% @config['customers'].each do |k,v| -%>
 [customer "<%= k %>"]
   <% v.each do |subk,subv| -%>
   <%= subk %> = <%= subv %>
   <% end -%>
+
 <% end -%>
 <% end -%>

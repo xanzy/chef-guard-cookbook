@@ -20,11 +20,11 @@
 chef_gem "chef-vault"
 require 'chef-vault'
 
-# First get the needed s3 key and secret from a Chef-Vault
-s3info = ChefVault::Item.load(node['chef-guard']['vault'], node['chef-guard']['s3_vault_item'])
+# First get the needed bookshelf key and secret from a Chef-Vault
+bookshelf = ChefVault::Item.load(node['chef-guard']['vault'], node['chef-guard']['vault_item'])
 # Then set the s3 attributes to the correct values...
-node.default['chef-guard']['config']['chef']['s3key']    = s3info['key']
-node.default['chef-guard']['config']['chef']['s3secret'] = s3info['secret']
+node.default['chef-guard']['config']['chef']['bookshelfkey']    = bookshelf['key']
+node.default['chef-guard']['config']['chef']['bookshelfsecret'] = bookshelf['secret']
 
 # Install the gems needed for the enabled tests
 node['chef-guard']['config']['tests'].each do |k,v|
@@ -87,8 +87,14 @@ unless node['chef-guard']['config']['supermarket'].nil?
   end
 end
 
-cookbook_file 'cg_foodcritic_tests.rb' do
-  path "#{node['chef-guard']['install_dir']}/cg_foodcritic_tests.rb"
+template "#{node['chef-guard']['install_dir']}/cg_foodcritic_tests.rb" do
+  source 'cg_foodcritic_tests.rb.erb'
+  backup false
+  variables(
+    :recipe_file => (__FILE__).to_s.split("cookbooks/")[1],
+    :template_file => source.to_s,
+    :matches => node['chef-guard']['foodcritic']['matches']
+  )
 end
 
 service 'chef-guard' do
