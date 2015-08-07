@@ -1,6 +1,10 @@
 Chef-Guard CHANGELOG
 ====================
 
+0.3.1
+-----
+- Miguel Ferreira - Fixed syntax error in the custom foodcritic tests
+
 0.3.0
 -----
 - Sander van Harmelen - Updated the cookbook to use Chef-Guard v0.6.0 which requires some config changes
