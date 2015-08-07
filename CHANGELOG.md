@@ -1,6 +1,11 @@
 Chef-Guard CHANGELOG
 ====================
 
+0.3.3
+-----
+- Sander van Harmelen - Updated the version attibutes to use the latest release of Chef-Guard v0.6.1
+- Miguel Ferreira - Updated the foodcritic tests for better readability
+
 0.3.2
 -----
 - Sander van Harmelen - Fixed foodcritic tests
