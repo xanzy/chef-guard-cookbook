@@ -50,7 +50,9 @@ rule 'CG001', 'Ensure all cookbook dependencies depend on a specific version' do
       # Get and loop through the hash with dependencies
       # and check if they depend on a specific version
       dependency_versions(ast).each do |name,version|
-        matches << name unless version.to_s != '' && /^(?:= )?\d+\.\d+\.\d+$/ === version.xpath(%q{@value}).to_s
+        unless version.to_s != '' && /^(?:= )?\d+\.\d+\.\d+$/ === version.xpath(%q{@value}).to_s
+          matches << name
+        end
       end
     end
     matches
