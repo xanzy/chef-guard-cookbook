@@ -39,6 +39,9 @@ def dependency_versions(ast)
   deps
 end
 
+def depends_on_specific_version?(version)
+  version.to_s != '' && /^(?:= )?\d+\.\d+\.\d+$/ === version.xpath(%q{@value}).to_s
+end
 
 rule 'CG001', 'Ensure all cookbook dependencies depend on a specific version' do
   tags %w(correctness metadata)
@@ -47,12 +50,8 @@ rule 'CG001', 'Ensure all cookbook dependencies depend on a specific version' do
     name = ast.xpath(%q{//command[ident/@value='name']})
 
     if name.to_s.match('<%= @matches %>')
-      # Get and loop through the hash with dependencies
-      # and check if they depend on a specific version
       dependency_versions(ast).each do |name,version|
-        unless version.to_s != '' && /^(?:= )?\d+\.\d+\.\d+$/ === version.xpath(%q{@value}).to_s
-          matches << name
-        end
+        matches << name unless depends_on_specific_version?(version)
       end
     end
     matches
