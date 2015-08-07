@@ -1,6 +1,10 @@
 Chef-Guard CHANGELOG
 ====================
 
+0.3.2
+-----
+- Sander van Harmelen - Fixed foodcritic tests
+
 0.3.1
 -----
 - Miguel Ferreira - Fixed syntax error in the custom foodcritic tests
