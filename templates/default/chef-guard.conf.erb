@@ -52,7 +52,7 @@
 <% end -%>
 <% end -%>
 
-<% if @config['chef']['type'] == "enterprise" || @config['chef']['version'] > 11 && !@config['customers'].nil? -%>
+<% if (@config['chef']['type'] == "enterprise" || @config['chef']['version'] > 11) && !@config['customers'].nil? -%>
 <% @config['customers'].each do |k,v| -%>
 [customer "<%= k %>"]
   <% v.each do |subk,subv| -%>
