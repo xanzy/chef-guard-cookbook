@@ -51,15 +51,26 @@ execute 'extract_download' do
   action :nothing
 end
 
-template '/etc/init/chef-guard.conf' do
-  source 'chef-guard.upstart.erb'
-  backup false
-  variables(
-    :recipe_file => (__FILE__).to_s.split("cookbooks/")[1],
-    :template_file => source.to_s,
-    :basedir => node['chef-guard']['install_dir']
-  )
-  notifies :restart, 'service[chef-guard]'
+# Check if CentOS/RHEL 7 is used, and thus assume systemd is present
+if node['platform_family'] == 'rhel' && node['platform_version'].to_i >= 7 && node['platform_version'].to_i < 8
+  # CentOS & RHEL 7
+  template '/etc/systemd/system/chef-guard.service' do
+    source 'chef-guard.service.erb'
+    notifies :run, 'execute[systemctl-daemon-reload]'
+    notifies :restart, 'service[chef-guard]'
+  end
+else
+  # If it isn't CentOS/RHEL 7, result in previous default behaviour and assume upstart is present.
+  template '/etc/init/chef-guard.conf' do
+    source 'chef-guard.upstart.erb'
+    backup false
+    variables(
+      :recipe_file => (__FILE__).to_s.split("cookbooks/")[1],
+      :template_file => source.to_s,
+      :basedir => node['chef-guard']['install_dir']
+    )
+    notifies :restart, 'service[chef-guard]'
+  end
 end
 
 template "#{node['chef-guard']['install_dir']}/chef-guard.conf" do
@@ -97,9 +108,23 @@ template "#{node['chef-guard']['install_dir']}/cg_foodcritic_tests.rb" do
   )
 end
 
-service 'chef-guard' do
-  provider Chef::Provider::Service::Upstart
-  supports :restart => true, :reload => true, :status => true
-  action :start
-  only_if { File.exists?("#{node['chef-guard']['install_dir']}/chef-guard") }
+# Check if CentOS/RHEL 7 is used
+if node['platform_family'] == 'rhel' && node['platform_version'].to_i >= 7 && node['platform_version'].to_i < 8
+  # Systemctl service daemon reload
+  execute 'systemctl-daemon-reload' do
+    command 'systemctl daemon-reload'
+    action :nothing
+  end
+  # CentOS & RHEL 7
+  service 'chef-guard' do
+    action [:enable, :start]
+  end
+else
+  # If it isn't CentOS/RHEL 7, result in previous default behaviour and assume upstart is present.
+  service 'chef-guard' do
+    provider Chef::Provider::Service::Upstart
+    supports :restart => true, :reload => true, :status => true
+    action :start
+    only_if { File.exists?("#{node['chef-guard']['install_dir']}/chef-guard") }
+  end
 end

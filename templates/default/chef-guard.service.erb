@@ -1,0 +1,10 @@
+[Unit]
+Description=Chef Guard daemon
+After=network.target auditd.service
+
+[Service]
+ExecStart=/opt/chef-guard/chef-guard
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target
