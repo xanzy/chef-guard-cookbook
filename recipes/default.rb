@@ -51,16 +51,29 @@ execute 'extract_download' do
   action :nothing
 end
 
-# Check if CentOS/RHEL 7 is used, and thus assume systemd is present
-if node['platform_family'] == 'rhel' && node['platform_version'].to_i >= 7 && node['platform_version'].to_i < 8
-  # CentOS & RHEL 7
-  template '/etc/systemd/system/chef-guard.service' do
-    source 'chef-guard.service.erb'
-    notifies :run, 'execute[systemctl-daemon-reload]'
-    notifies :restart, 'service[chef-guard]'
+# Set init style for supported platforms
+case node['platform_family']
+when 'rhel'
+  # CentOS/RHEL 7 and up
+  if node['platform_version'].to_i >= 7
+    INIT_SYSTEM = 'systemd'
+  # CentOS/RHEL 6 (not supporting 5)
+  else
+    INIT_SYSTEM = 'upstart'
   end
-else
-  # If it isn't CentOS/RHEL 7, result in previous default behaviour and assume upstart is present.
+when 'debian'
+  # For ubuntu 14.10 and below
+  if node['platform'] == 'ubuntu' && node['platform_version'].to_i <= 14.10
+    INIT_SYSTEM = 'upstart'
+  # For all other ubuntu/debian versions (ubuntu 14.10 and up, debian 8 and up)
+  else
+    INIT_SYSTEM = 'systemd'
+  end
+end
+
+# Create init scripts
+case INIT_SYSTEM
+when 'upstart'
   template '/etc/init/chef-guard.conf' do
     source 'chef-guard.upstart.erb'
     backup false
@@ -71,8 +84,15 @@ else
     )
     notifies :restart, 'service[chef-guard]'
   end
+when 'systemd'
+  template '/etc/systemd/system/chef-guard.service' do
+    source 'chef-guard.service.erb'
+    notifies :run, 'execute[systemctl-daemon-reload]'
+    notifies :restart, 'service[chef-guard]'
+  end
 end
 
+# Create chef-guard configuration file
 template "#{node['chef-guard']['install_dir']}/chef-guard.conf" do
   source 'chef-guard.conf.erb'
   backup false
@@ -108,23 +128,21 @@ template "#{node['chef-guard']['install_dir']}/cg_foodcritic_tests.rb" do
   )
 end
 
-# Check if CentOS/RHEL 7 is used
-if node['platform_family'] == 'rhel' && node['platform_version'].to_i >= 7 && node['platform_version'].to_i < 8
-  # Systemctl service daemon reload
-  execute 'systemctl-daemon-reload' do
-    command 'systemctl daemon-reload'
-    action :nothing
-  end
-  # CentOS & RHEL 7
-  service 'chef-guard' do
-    action [:enable, :start]
-  end
-else
-  # If it isn't CentOS/RHEL 7, result in previous default behaviour and assume upstart is present.
+# Service start/stop procedure
+case INIT_SYSTEM
+when 'upstart'
   service 'chef-guard' do
     provider Chef::Provider::Service::Upstart
     supports :restart => true, :reload => true, :status => true
     action :start
     only_if { File.exists?("#{node['chef-guard']['install_dir']}/chef-guard") }
+  end
+when 'systemd'
+  execute 'systemctl-daemon-reload' do
+    command 'systemctl daemon-reload'
+    action :nothing
+  end
+  service 'chef-guard' do
+    action [:enable, :start]
   end
 end
