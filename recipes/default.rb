@@ -87,6 +87,11 @@ when 'upstart'
 when 'systemd'
   template '/etc/systemd/system/chef-guard.service' do
     source 'chef-guard.service.erb'
+    variables(
+      :recipe_file => (__FILE__).to_s.split("cookbooks/")[1],
+      :template_file => source.to_s,
+      :basedir => node['chef-guard']['install_dir']
+    )
     notifies :run, 'execute[systemctl-daemon-reload]'
     notifies :restart, 'service[chef-guard]'
   end

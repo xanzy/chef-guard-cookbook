@@ -12,7 +12,7 @@ After=network.target auditd.service
 
 [Service]
 Environment="LANG=en_US.UTF-8"
-ExecStart=<%= @basedir %>/chef-guard >>
+ExecStart=<%= @basedir %>/chef-guard
 ExecReload=/bin/kill -HUP $MAINPID
 
 [Install]
