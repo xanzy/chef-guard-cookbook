@@ -51,39 +51,9 @@ execute 'extract_download' do
   action :nothing
 end
 
-# Set init style for supported platforms
-case node['platform_family']
-when 'rhel'
-  # CentOS/RHEL 7 and up
-  if node['platform_version'].to_i >= 7
-    INIT_SYSTEM = 'systemd'
-  # CentOS/RHEL 6 (not supporting 5)
-  else
-    INIT_SYSTEM = 'upstart'
-  end
-when 'debian'
-  # For ubuntu 14.10 and below
-  if node['platform'] == 'ubuntu' && node['platform_version'].to_i <= 14.10
-    INIT_SYSTEM = 'upstart'
-  # For all other ubuntu/debian versions (ubuntu 14.10 and up, debian 8 and up)
-  else
-    INIT_SYSTEM = 'systemd'
-  end
-end
+init_package = node['init_package']
 
-# Create init scripts
-case INIT_SYSTEM
-when 'upstart'
-  template '/etc/init/chef-guard.conf' do
-    source 'chef-guard.upstart.erb'
-    backup false
-    variables(
-      :recipe_file => (__FILE__).to_s.split("cookbooks/")[1],
-      :template_file => source.to_s,
-      :basedir => node['chef-guard']['install_dir']
-    )
-    notifies :restart, 'service[chef-guard]'
-  end
+case init_package
 when 'systemd'
   template '/etc/systemd/system/chef-guard.service' do
     source 'chef-guard.service.erb'
@@ -93,6 +63,17 @@ when 'systemd'
       :basedir => node['chef-guard']['install_dir']
     )
     notifies :run, 'execute[systemctl-daemon-reload]'
+    notifies :restart, 'service[chef-guard]'
+  end
+else
+  template '/etc/init/chef-guard.conf' do
+    source 'chef-guard.upstart.erb'
+    backup false
+    variables(
+      :recipe_file => (__FILE__).to_s.split("cookbooks/")[1],
+      :template_file => source.to_s,
+      :basedir => node['chef-guard']['install_dir']
+    )
     notifies :restart, 'service[chef-guard]'
   end
 end
@@ -134,14 +115,7 @@ template "#{node['chef-guard']['install_dir']}/cg_foodcritic_tests.rb" do
 end
 
 # Service start/stop procedure
-case INIT_SYSTEM
-when 'upstart'
-  service 'chef-guard' do
-    provider Chef::Provider::Service::Upstart
-    supports :restart => true, :reload => true, :status => true
-    action :start
-    only_if { File.exists?("#{node['chef-guard']['install_dir']}/chef-guard") }
-  end
+case init_package
 when 'systemd'
   execute 'systemctl-daemon-reload' do
     command 'systemctl daemon-reload'
@@ -149,5 +123,12 @@ when 'systemd'
   end
   service 'chef-guard' do
     action [:enable, :start]
+  end
+else
+  service 'chef-guard' do
+    provider Chef::Provider::Service::Upstart
+    supports :restart => true, :reload => true, :status => true
+    action :start
+    only_if { File.exists?("#{node['chef-guard']['install_dir']}/chef-guard") }
   end
 end
