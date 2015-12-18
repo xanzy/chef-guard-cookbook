@@ -1,6 +1,10 @@
 Chef-Guard CHANGELOG
 ====================
 
+0.3.5
+-----
+- Sander van Harmelen - Updated the version attibutes to use the latest release of Chef-Guard v0.6.2
+
 0.3.4
 -----
 - Bart Groenendal - Added systemd support for CentOS / RHEL 7 and up.
