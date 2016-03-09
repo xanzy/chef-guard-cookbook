@@ -8,24 +8,27 @@ Please check http://xanzy.io/projects/chef-guard for all needed details
 
 Usage
 -----
-This cookbook uses [Chef-Vault](https://github.com/Nordstrom/chef-vault) to store (among some other things, see the NOTE below) the .pem file content. Please see the following example for creating the vault items:
-`knife vault create chef-guard chef.pem -M client -S "name:some-node-search" -A your-chef-username --file chef.pem`
+This cookbook uses [Chef-Vault](https://github.com/chef/chef-vault) to store the .pem file content, bookshelf key, and bookshelf secret. The pem file is the private key of the Chef user that Chef-Guard uses to interact with the Chef server and Supermarket. Bookshelf is an internal component of your Chef installation and is used to store uploaded cookbook files.
 
-Note:
------
-Some addional info about the chef.s3 Chef-Vault (the name is configurable by the way), this vault does **NOT** have to contain any actual S3 keys (unless you configured your Chef backend to use real S3 storage), but it needs to contain the keys that are used by Chef to talk to the bookshelf. The bookshelf is an internal component of your Chef installation and is used to store uploaded cookbook files. The keys are created by Chef during install time and are saved in either /etc/chef-server/chef-server-secrets.json (for Open Source Chef) or /etc/opscode/private-chef-secrets.json (for Enterpise Chef) and look something like this in those files:
+Please see the following examples for creating the vault items:
+
+```
+knife vault create chef-guard chef.pem -M client -S "name:some-node-search" -A your-chef-username --file chef.pem
+```
+
+The bookshelf keys are created by Chef during install time and are saved in either /etc/chef-server/chef-server-secrets.json (for Open Source Chef) or /etc/opscode/private-chef-secrets.json (for Enterpise Chef and Chef 12) and look something like this in those files:
 
 ```
  "bookshelf": {
     "access_key_id": "xxxxxx",
-    "secret_access_key": "xxxxxx"
+    "secret_access_key": "yyyyyy"
  }
 ```
 
 So just get the keys from one of those files and create the vault like this to get yourself going:
 
 ```
-knife vault create passwords chef.s3 -M client -S "name:some-node-search" -A your-chef-username '{"key":"xxxxxx","secret":"xxxxxx"}'
+knife vault create chef-guard chef.bookshelf -M client -S "name:some-node-search" -A your-chef-username '{"key":"xxxxxx","secret":"yyyyyy"}'
 ```
 
 Contributing
