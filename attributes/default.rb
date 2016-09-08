@@ -18,39 +18,39 @@
 #
 
 
-default['chef-guard']['version']       = '0.6.2'
+default['chef-guard']['version']       = '0.7.0'
 default['chef-guard']['install_dir']   = '/opt/chef-guard'
 default['chef-guard']['vault']         = 'chef-guard'
 default['chef-guard']['vault_item']    = 'chef.bookshelf'
 
 if kernel['machine'] =~ /x86_64/
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x64.tar.gz"
-  default['chef-guard']['checksum'] = '00cc02505462645fd133ed1c4ceff5fc4311f1a3b242da177156b5cf98f4d66b'
+  default['chef-guard']['checksum'] = '5f20ac8798f5dc79e9e34544430bb84b40db2032210e33198c29aeb59bfa407a'
 else
   default['chef-guard']['url']      = "https://github.com/xanzy/chef-guard/releases/download/v#{node['chef-guard']['version']}/chef-guard-v#{node['chef-guard']['version']}-linux-x86.tar.gz"
-  default['chef-guard']['checksum'] = '5c7f01b43893f6d71e4bf1c1368e514f9f89fd53437ad7b917e6d47270bf2150'
+  default['chef-guard']['checksum'] = '7157e9aeb32dd1d5371706dae61653cf28fe217dd012a46bea60f76cee4d9ff9'
 end
 
 # These options are used for the 'Default' section
-default['chef-guard']['config']['default']['listenip']        = '127.0.0.2'
-default['chef-guard']['config']['default']['listenport']      = '8000'
-default['chef-guard']['config']['default']['logfile']         = '/var/log/chef-guard.log'
-default['chef-guard']['config']['default']['tempdir']         = '/var/tmp/chef-guard'
-default['chef-guard']['config']['default']['mode']            = 'silent'
-default['chef-guard']['config']['default']['maildomain']      = ''
-default['chef-guard']['config']['default']['mailserver']      = ''
-default['chef-guard']['config']['default']['mailport']        = '25'
-default['chef-guard']['config']['default']['mailrecipient']   = ''
-default['chef-guard']['config']['default']['validatechanges'] = 'permissive'
-default['chef-guard']['config']['default']['commitchanges']   = true
-default['chef-guard']['config']['default']['mailchanges']     = true
-default['chef-guard']['config']['default']['searchgit']       = true
-default['chef-guard']['config']['default']['publishcookbook'] = true
-default['chef-guard']['config']['default']['blacklist']       = ''
-default['chef-guard']['config']['default']['gitorganization'] = 'chef-guard'
-default['chef-guard']['config']['default']['gitcookbookorgs'] = ''
-default['chef-guard']['config']['default']['includefcs']      = ''
-default['chef-guard']['config']['default']['excludefcs']      = ''
+default['chef-guard']['config']['default']['listenip']           = '127.0.0.2'
+default['chef-guard']['config']['default']['listenport']         = '8000'
+default['chef-guard']['config']['default']['logfile']            = '/var/log/chef-guard.log'
+default['chef-guard']['config']['default']['tempdir']            = '/var/tmp/chef-guard'
+default['chef-guard']['config']['default']['mode']               = 'silent'
+default['chef-guard']['config']['default']['maildomain']         = ''
+default['chef-guard']['config']['default']['mailserver']         = ''
+default['chef-guard']['config']['default']['mailport']           = '25'
+default['chef-guard']['config']['default']['mailrecipient']      = ''
+default['chef-guard']['config']['default']['validatechanges']    = 'permissive'
+default['chef-guard']['config']['default']['commitchanges']      = true
+default['chef-guard']['config']['default']['mailchanges']        = true
+default['chef-guard']['config']['default']['searchgit']          = true
+default['chef-guard']['config']['default']['publishcookbook']    = true
+default['chef-guard']['config']['default']['blacklist']          = ''
+default['chef-guard']['config']['default']['gitconfig']          = 'chef-guard'
+default['chef-guard']['config']['default']['gitcookbookconfigs'] = ''
+default['chef-guard']['config']['default']['includefcs']         = ''
+default['chef-guard']['config']['default']['excludefcs']         = ''
 
 # These options are used for the 'Chef' section
 default['chef-guard']['config']['chef']['type']            = 'enterprise'
@@ -92,13 +92,11 @@ default['chef-guard']['foodcritic']['matches'] = '.*'
 #default['chef-guard']['config']['git']['org1'] = {
 #  'type' => 'github',
 #  'serverurl' => '',
-#  'sslnoverify' => false,
 #  'token' => 'xxx'
 #}
 #default['chef-guard']['config']['git']['org2'] = {
-#  'type' => 'github',
-#  'serverurl' => 'https://github.company.com',
-#  'sslnoverify' => false,
+#  'type' => 'gitlab',
+#  'serverurl' => 'https://gitlab.company.com',
 #  'token' => 'xxx'
 #}
 
@@ -109,5 +107,5 @@ default['chef-guard']['foodcritic']['matches'] = '.*'
 #}
 #default['chef-guard']['config']['customers']['demo2'] = {
 #  'mailrecipient' => 'demo2@company.com',
-#  'gitcookbookorgs' => 'org1, org2'
+#  'gitcookbookconfigs' => 'config1, config2'
 #}
