@@ -1,6 +1,10 @@
 Chef-Guard CHANGELOG
 ====================
 
+0.4.1
+-----
+- Sander van Harmelen - Updated the version attibutes to use the latest release of Chef-Guard v0.7.1.
+
 0.4.0
 -----
 - Sander van Harmelen - Updated the version attibutes to use the latest release of Chef-Guard v0.7.0. This also required updating some config attributes to remain compatible with the latest version.
