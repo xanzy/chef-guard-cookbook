@@ -17,7 +17,9 @@
 # limitations under the License.
 #
 
-chef_gem "chef-vault"
+chef_gem "chef-vault" do
+  compile_time true
+end
 require 'chef-vault'
 
 # First get the needed bookshelf key and secret from a Chef-Vault
